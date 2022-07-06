@@ -1,0 +1,13 @@
+---
+
+# tasks file for RaspiCam
+- hosts: RaspiCams
+  become: true
+
+  vars:
+    motion_package: https://github.com/Motion-Project/motion/releases/download/release-4.3.2/pi_buster_motion_4.3.2-1_armhf.deb
+
+  roles:
+    - dependencies
+    - motion
+    - motioneye

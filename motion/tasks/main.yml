@@ -1,0 +1,22 @@
+---
+# tasks file for motion
+#Install motion
+- name: Check if motion is installed
+  command: dpkg-query -W motion
+  register: motion_check_deb
+  failed_when: motion_check_deb.rc > 1
+  changed_when: motion_check_deb.rc == 1
+
+- name: Download and Install Motion
+  apt: 
+    deb: "{{ motion_package }}"
+    #when: motion_check_deb.rc == 1
+#Disable motion service, motionEye controls motion
+- name: Stop motion
+  systemd:
+    name: motion
+    state: stopped
+- name: Disable motion
+  systemd:
+    name: motion
+    enabled: no

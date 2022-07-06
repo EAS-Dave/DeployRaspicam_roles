@@ -1,0 +1,60 @@
+---
+#Install the dependencies from the repositories
+- name: Install python2 and python-dev-is-python2
+  apt:
+    update_cache: yes
+    pkg: 
+      - python2
+      - python-dev-is-python2
+    state: present
+- name: Get pip
+  get_url:
+    url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
+    dest: /tmp/get-pip.py
+- name: Install Pip
+  command: python2 /tmp/get-pip.py 
+
+- name: Install libssl-dev libcurl4-openssl-dev libjpeg-dev zlib1g-dev
+  apt:
+    update_cache: yes
+    pkg: 
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - libjpeg-dev
+      - zlib1g-dev
+    state: present
+
+- name: Install Motioneye
+  pip:
+    name: motioneye
+    executable: pip2
+    state: latest
+
+- name: Create a directory if it does not exist
+  file:
+    path: /etc/motioneye
+    state: directory
+
+- name: Copy config
+  copy: 
+    remote_src: yes
+    src: /usr/local/share/motioneye/extra/motioneye.conf.sample
+    dest: /etc/motioneye/motioneye.conf
+- name: Prepare the media directory
+  file:
+    path: /var/lib/motioneye
+    state: directory
+- name: Add an init script, configure it to run at startup and start the motionEye server
+  copy: 
+    remote_src: yes
+    src: /usr/local/share/motioneye/extra/motioneye.systemd-unit-local
+    dest: /etc/systemd/system/motioneye.service
+- name: enable motioneye
+  systemd:
+    daemon_reload: yes
+    name: motioneye
+    enabled: yes
+- name: enable motioneye
+  systemd:
+    name: motioneye
+    state: started
