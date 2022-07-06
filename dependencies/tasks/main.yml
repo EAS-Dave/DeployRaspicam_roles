@@ -1,0 +1,19 @@
+---
+
+# tasks file for RaspiCam
+
+- name: apt-get update standard OS build
+  apt:
+    upgrade: yes    
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+#Install ffmpeg and other motion dependencies
+- name: Install ffmpeg, libmariadb3, libpq5 and libmicrohttpd12
+  apt:
+    update_cache: yes
+    pkg: 
+      - ffmpeg
+      - libmariadb3
+      - libpq5
+      - libmicrohttpd12
+    state: present
