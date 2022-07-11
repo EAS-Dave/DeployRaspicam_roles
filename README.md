@@ -1,7 +1,9 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This uses Ansbile Roles to deploy motioneye onto a Pi Zero.  Once installed, you need to run raspi-config and enable support of legacy cameras.
+
+Also, to remove the pink colour from noIr cameras add the following in the motioneye settings freetext box: awb_auto_is_greyworld=1
 
 Requirements
 ------------
